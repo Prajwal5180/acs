@@ -1,8 +1,4 @@
-Sure! Here's a lab content outline for provisioning Azure Communication Services (ACS) resources:
-
----
-
-## Lab: Provisioning Azure Communication Services (ACS) Resources
+## Exercise 1: Provisioning Azure Communication Services (ACS) Resources
 
 ### Objective:
 Learn how to provision Azure Communication Services resources using the Azure portal and Azure CLI.
