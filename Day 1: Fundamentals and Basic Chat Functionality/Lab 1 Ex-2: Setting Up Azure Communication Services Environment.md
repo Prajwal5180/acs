@@ -54,3 +54,78 @@ Learn how to configure access controls using Microsoft Entra ID to secure Azure 
 
 ### Conclusion:
 By completing this lab, you should be able to configure access controls using Microsoft Entra ID to secure Azure Communication Services resources effectively.
+
+## Lab: Configuring Access Controls with Microsoft Entra ID for Azure Communication Services
+
+### Objective
+Learn how to configure access controls using Microsoft Entra ID (formerly Azure Active Directory) for Azure Communication Services.
+
+### Prerequisites
+- An active Azure subscription
+- Azure Communication Services resource
+- Microsoft Entra ID setup
+- Azure CLI installed
+
+### Steps
+
+#### 1. **Create a Service Principal**
+1. Open the Azure portal and navigate to **Azure Active Directory**.
+2. Select **App registrations** and click **New registration**.
+3. Enter a name for your application and click **Register**.
+4. Note the **Application (client) ID** and **Directory (tenant) ID**.
+
+#### 2. **Assign Roles to the Service Principal**
+1. Navigate to your Azure Communication Services resource.
+2. Select **Access control (IAM)** and click **Add role assignment**.
+3. Choose the role **Azure Communication Services Email Sender** or other relevant roles.
+4. Select **Members** and add your registered application.
+
+#### 3. **Configure Authentication in Your Application**
+1. Use the Azure CLI to create a service principal:
+   ```bash
+   az ad sp create-for-rbac --name <app-name> --role <role> --scopes /subscriptions/<subscription-id>/resourceGroups/<resource-group>/providers/Microsoft.Communication/communicationServices/<resource-name>
+   ```
+2. Note the **appId**, **password**, and **tenant** values.
+
+#### 4. **Set Up Managed Identity (Optional)**
+1. Navigate to your Azure Communication Services resource.
+2. Select **Identity** under **Settings**.
+3. Enable **System assigned managed identity**.
+4. Assign the necessary roles to the managed identity.
+
+#### 5. **Integrate with Azure Communication Services SDK**
+1. Install the Azure Communication Services SDK in your project:
+   ```bash
+   dotnet add package Azure.Communication.Common
+   dotnet add package Azure.Communication.Email
+   ```
+2. Use the following code to authenticate using Microsoft Entra ID:
+   ```csharp
+   var clientSecretCredential = new ClientSecretCredential(
+       "<tenant-id>",
+       "<client-id>",
+       "<client-secret>"
+   );
+
+   var emailClient = new EmailClient(
+       new Uri("https://<resource-name>.communication.azure.com"),
+       clientSecretCredential
+   );
+   ```
+
+#### 6. **Test the Configuration**
+1. Send a test email using the configured client:
+   ```csharp
+   var emailMessage = new EmailMessage(
+       "<sender-email>",
+       new EmailRecipients(new List<EmailAddress> { new EmailAddress("<recipient-email>") }),
+       "Test Email",
+       new EmailContent("This is a test email.")
+   );
+
+   var response = await emailClient.SendAsync(emailMessage);
+   Console.WriteLine($"Email sent with status: {response.Status}");
+   ```
+
+### Conclusion
+You have successfully configured access controls using Microsoft Entra ID for Azure Communication Services. This setup enhances security by leveraging managed identities and role-based access control.
