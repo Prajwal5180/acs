@@ -39,16 +39,17 @@ Azure Communication Services provides APIs for integrating multichannel communic
 
    ![](../images/day1-lab1-5.png)
 
-4. After the validation gets succeeded, click on **Create** to provision communication services.
+1. After the validation gets succeeded, click on **Create** to provision communication services.
 
    ![](../images/day1-lab1-4.png)
 
     >**Note**: After clicking on Submit, it might take 2 minutes to provision the communication services.
 
-1. **Navigate to the Communication Services resource** you created.
-1. **Go to "Keys"** in the left-hand menu.
-1. **Copy the connection strings and service endpoints**:
-   - You will use these values to authenticate and connect to the Communication Services resource.
+1. Navigate to the Communication Services resource you created.
+
+1. Go to **Keys** in the left-hand menu.
+
+1. Copy the connection strings and service endpoints. You will use these values to authenticate and connect to the Communication Services resource.
 
 ## Task 2: Configuring access controls with Microsoft Entra ID
 
@@ -58,46 +59,59 @@ Azure Communication Services provides APIs for integrating multichannel communic
 
    ![](../images/day1-lab1-6.png)
 
-2. Select **App registrations (2)** under **Manage (1)** section from the left pan.
+1. Select **App registrations (2)** under **Manage (1)** section from the left pan.
 
    ![](../images/day1-lab1-9.png)
 
-3. Click on **+ New registration** from upper left corner of App registrations page.
+1. Click on **+ New registration** from upper left corner of App registrations page.
 
    ![](../images/day1-lab1-7.png)
 
-3. On **Register an application** blade specify the following settings and click **Register**.
+1. On **Register an application** blade specify the following settings and click **Register**.
 
     | Setting | Value |
-    | --- | --- |
+    | ---  | --- |
     | Name | **communication-app (1)**  |
     | Supported account types | **Accounts in this organizational directory only (xxxx - Single tenant) (2)** |
 
    ![](../images/day1-lab1-8.png)
 
-1. Navigate to **Certificates & secrets** under manage section of the newly registered app.
+1. Navigate to **Certificates & secrets (1)** under manage section of the newly registered app.
 
-1. Click on **+ New client secret** under client secrets section. On new **Add a client secret** tab, provide the **Description** and click on **Add**. Copy the client secret value and paste it in notepad for later use before leaving the page as it cannot be viewed, except for immediately after creation.
+1. Click on **+ New client secret (3)** under **Client secrets (2)** section. On new **Add a client secret** tab, specify the following settings and click on **Add**.
 
-4. Note the **Application (client) ID** and **Directory (tenant) ID**.
+    | Setting | Value |
+    | --- | --- |
+    | Description | **communication secret (1)**  |
+    | Expires | **Keep it as default. It can be changed as per the requirement (2)** |
+
+   ![](../images/day1-lab1-16.png)
+
+    >**Note**: Copy the client secret value and paste it in notepad for later use before leaving the page as it cannot be viewed, except for immediately after creation.
+
+1. Note the **Application (client) ID** and **Directory (tenant) ID**.
 
 #### 2. **Assign Roles to the Service Principal**
 
 1. Navigate to your **communication-<inject key="DeploymentID"></inject>** Azure Communication Services resource.
 
-2. Select **Access control (IAM) (1)** and click on **+ Add (2)** dropdown the click on **Add role assignment (3)**.
+1. Select **Access control (IAM) (1)** and click on **+ Add (2)** dropdown the click on **Add role assignment (3)**.
 
    ![](../images/day1-lab1-11.png)
 
-3. In the Add role assignment tab, Search and select the role **Communication and Email Service Owner** then click on **Next**.
+1. In the Add role assignment tab, Search **Communication and Email Service Owner (1)** and select the role **Communication and Email Service Owner (2)** then click on **Next (3)**.
 
+   ![](../images/day1-lab1-12.png)
 
+1. On **Members** tab, keep **Assign access to** as **User, group or service principal (1)** then under **Members** select **+ Select Members (2)**. From select members tab, search and select  **communication-app (3)** service principal then choose **Select (4)**.
 
-4. On Members tab, keep assign access to as User, group or service principal then under **Members** select **+ Members**. From select members, search and select  **communication-app** service principal then choose **Select**.
+   ![](../images/day1-lab1-13.png)
 
-1. Click on **Review + assign** twice.
+1. Click on **Review + assign (1)** twice.
 
-2. Note the **appId**, **password**, and **tenant** values.
+   ![](../images/day1-lab1-14.png)
+
+1. Note the **appId**, **password**, and **tenant** values.
 
 **Integrate with Azure Communication Services SDK**
 1. Install the Azure Communication Services SDK in your project:
@@ -105,7 +119,7 @@ Azure Communication Services provides APIs for integrating multichannel communic
    dotnet add package Azure.Communication.Common
    dotnet add package Azure.Communication.Email
    ```
-2. Use the following code to authenticate using Microsoft Entra ID:
+1. Use the following code to authenticate using Microsoft Entra ID:
    ```csharp
    var clientSecretCredential = new ClientSecretCredential(
        "<tenant-id>",
@@ -133,103 +147,63 @@ Azure Communication Services provides APIs for integrating multichannel communic
    Console.WriteLine($"Email sent with status: {response.Status}");
    ```
 
-## Task 2: Exploring the Azure portal to familiarize with ACS features
+## Task 3: Exploring the Azure portal to familiarize with ACS features
 
 By the end of this lab, you will have hands-on experience navigating the **Azure Portal**, discovering key features of **Azure Communication Services**, and understanding how to use the portal to manage communication resources.
 
-### **Lab Steps:**
+1. On the Azure portal, in **Search resources, services and docs (G+/)** box at the top of the portal search for **Communication Services (1)** and select **Communication Services (2)**. Select **acs-<inject key="DeploymentID"></inject>** communication service.
 
-#### **1. Access the Azure Portal**
-   - Open a web browser and navigate to the [Azure Portal](https://portal.azure.com).
-   - Log in using your **Azure account credentials**.
-   
-   **Expected Outcome:**
-   - You should now be on the **Azure Portal Dashboard**.
+   ![](../images/day1-lab1-1.png)
 
----
+**Explore Communication Service Features**
 
-#### **2. Navigate to Azure Communication Services**
-   - On the left sidebar of the Azure Portal, click on the **"Search"** bar at the top.
-   - Type **"Communication Services"** in the search bar.
-   - Select **"Communication Services"** from the search results.
+Within the **Communication Services** resource page, explore the following features:
 
-   **Expected Outcome:**
-   - You will be taken to the **Communication Services** section where you can see all your communication resources.
+1. **Chat**: Azure Communication Services Chat can help you add real-time text communication to your cross-platform applications. Explore the setup for adding real-time chat capabilities to your applications.
 
----
+   The Chat APIs provide an auto-scaling service for persistently stored text and data communication. Other key features include:
 
-#### **3. Create a New Communication Service**
-   - Click on the **"Create"** button at the top of the Communication Services page.
-   - In the **"Create Communication Services"** wizard, fill in the required information:
-     - **Subscription**: Choose the subscription you wish to use.
-     - **Resource Group**: Select an existing resource group or create a new one.
-     - **Region**: Choose the region closest to you or your users.
-     - **Name**: Give your Communication Service a unique name.
-   - Click **Review + Create**, review the configuration, and then click **Create**.
+   - **Custom Identity and Addressing** - Azure Communication Services provides generic identities to address communication endpoints. Clients use these identities to authenticate to the Azure service and communicate with each other in chat threads you control.
+   - **Encryption** - Chat SDKs encrypt traffic and prevents tampering on the wire.
+   - **Microsoft Teams Meetings** - Chat SDKs can join Teams meetings and communicate with Teams chat messages.
+   - **Real-time Notifications** - Chat SDKs use efficient persistent connectivity (WebSockets) to receive real-time notifications such as when a remote user is typing. When apps are running in the background, built-in functionality is available to fire pop-up notifications ("toasts") to inform end users of new threads and messages.
+   - **Bot Extensibility** - It's easy to add Azure bots to the Chat service with Azure Bot integration.
 
-   **Expected Outcome:**
-   - After a few moments, your new Communication Service will be created, and you will see it listed in the **Communication Services** section.
+1. **Email**: Azure Communication Services offers a platform for businesses to enhance customer engagement through email. It supports high-volume transactional, bulk, and marketing emails, including application-to-person (A2P) use cases. With production-ready SDKs and SMTP support, businesses can easily integrate email capabilities into their applications. The service enables collaboration across multiple communication channels, such as SMS, and allows for scalable, reliable email features with pay-as-you-go pricing using your own SMTP domains.
+Other key features include:
 
----
+   - **Azure-managed domain**: Customers can send mail from the pre-provisioned domain (xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx.azurecomm.net).
+   - **Custom domain**: Customers can send mail from their own verified domain (notify.contoso.com).
+   - **Sender authentication support**: The platform enables support for Sender Policy Framework (SPF) and Domain Keys Identified Mail (DKIM) settings for both Azure-managed and custom domains. Authenticated Received Chain (ARC) support preserves the email authentication result during transitioning.
+   - **Email spam protection and fraud detection**: The platform performs email hygiene for all messages. It offers comprehensive email protection through Microsoft Defender components by enabling the existing transport rules for detecting malware: URL Blocking and Content Heuristic.
+   - **Email analytics**: The Insights dashboard provides email analytics. The service emits logs at the request level. Each log has a message ID and recipient information for diagnostic and auditing purposes.
+   - **Engagement tracking**: The platform supports bounce, blocked, open, and click tracking.
 
-#### **4. Explore Communication Service Overview**
-   - After the resource has been created, click on the resource name to access the **Communication Services Overview** page.
-   - Review the available options:
-     - **Overview Tab**: View the basic details of the service such as name, subscription, and resource group.
-     - **Keys and Connection Strings**: Access the keys and connection strings for your communication service.
-     - **Monitoring**: Explore metrics, logs, and diagnostics for your communication resources.
-   
-   **Expected Outcome:**
-   - You will gain an understanding of the communication service dashboard and the various monitoring and management features available.
+1. **SMS**: Azure Communication Services enables you to send and receive short message service (SMS) text messages using the Communication Services SMS SDKs. These SDKs can be used to support customer service scenarios, appointment reminders, two-factor authentication, and other real-time communication needs. Key features of Azure Communication Services SMS SDKs include:
 
----
+   - **Simple setup** experience for adding SMS capability to your applications.
+   - **High Velocity** message support over toll free numbers and short codes for A2P (Application to Person) use cases in the United States.
+   - **Bulk Messaging** supported to enable sending messages to multiple recipients at a time.
+   - **Two-way** conversations to support scenarios like customer support, alerts, and appointment reminders.
+   - **Reliable Delivery** with real-time delivery reports for messages sent from your application.
+   - **Analytics** to track your SMS usage patterns. See SMS insights for details.
+   - **Opt-Out** handling support to automatically detect and respect opt-outs for toll-free numbers and short codes. US carriers mandate and enforce opt-outs for US toll-free numbers.
 
-#### **5. Explore Communication Service Features**
-   - Within the **Communication Services** resource page, explore the following features:
-   
-     - **Voice and Video**: Learn how to enable voice and video calling for your app.
-     - **Chat**: Explore the setup for adding real-time chat capabilities to your applications.
-     - **SMS**: Familiarize yourself with how to send SMS messages through Azure Communication Services.
-     - **Email**: Set up email communication through Azure's email services.
+1. **Voice and Video**: Learn how to enable voice and video calling for your app. Azure Communication Services allows end-user browsers, apps, and services to drive voice and video communication.
 
-   **Steps for each feature:**
-   - Click on each feature's tab to explore the specific configuration options and settings. 
-   - You will likely see options for adding APIs, setting up necessary credentials, and creating communication flows.
+   The Calling SDK offers several features for enhanced communication:
 
-   **Expected Outcome:**
-   - You should now be familiar with the key communication features available within Azure Communication Services.
-
----
-
-#### **6. Explore API Access and Authentication**
-   - Under the **"Keys and Connection Strings"** section, view the **connection strings** and **API keys**.
-   - Familiarize yourself with the options for authenticating applications or services that need to access Azure Communication Services via REST APIs or SDKs.
-   - Copy the **connection string** to be used in future projects or applications.
-
-   **Expected Outcome:**
-   - You will understand how to obtain and use the connection strings for integrating Azure Communication Services with your applications.
-
----
-
-#### **7. Configure Resource Access with Role-Based Access Control (RBAC)**
-   - In the **Communication Services** resource page, click on the **Access control (IAM)** section from the left-hand menu.
-   - Click **+ Add > Add role assignment** to assign roles to users or service principals.
-   - Select a role (e.g., **Contributor**, **Reader**) and assign it to a user or application.
-   - Click **Save**.
-
-   **Expected Outcome:**
-   - You should now understand how to manage access control for your Azure Communication Services resources through RBAC.
-
----
-
-#### **8. Review Logs and Diagnostics**
-   - Under the **Monitoring** section of your Communication Service, explore the **logs**, **metrics**, and **diagnostics** features.
-   - Learn how to set up **alerts** to monitor activity on your Communication Service resources.
-
-   **Expected Outcome:**
-   - You will have hands-on experience with how to monitor your communication service and troubleshoot any issues that arise.
-
-
+- **Device Management and Media**: Allows binding to audio/video devices, encoding for efficient transmission, and screen/application sharing.
+- **PSTN**: Supports initiating voice calls with traditional phone networks using Azure-acquired or BYO numbers.
+- **Teams Meetings & Calling**: Can join and interact with Teams meetings for voice and video calls.
+- **Encryption**: Ensures secure communication by encrypting traffic.
+- **Addressing**: Uses generic identities for endpoint communication and call visibility.
+- **User Access Security**: Manages user roles, permissions, and call access through Virtual Rooms.
+- **Notifications**: Alerts users of incoming calls with customizable notifications.
+- **Media Stats**: Provides metrics for call quality analysis and optimization.
+- **Video Constraints**: Allows control over video quality, including resolution and frame rate.
+- **User Facing Diagnostics (UFD)**: Tracks call quality issues like network problems or muted microphones.
+- **Real Time Text (RTT)**: Enables near real-time text during calls for users with speaking difficulties.
 
 ### Conclusion:
 By completing this lab, you should be able to provision Azure Communication Services resources using both the Azure portal and Azure CLI effectively.
